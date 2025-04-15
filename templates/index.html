@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fake News Detector</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+    body {
+    font-family: "Poppins", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                url("https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+
+      .container {
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.8
+        ); /* White with transparency */
+        backdrop-filter: blur(10px); /* Blur effect for the background */
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        width: 80%;
+        max-width: 800px;
+        text-align: center;
+      }
+
+      h1 {
+        color: #007bff;
+        margin-bottom: 20px;
+        font-size: 2.5em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      form {
+        margin-top: 20px;
+      }
+
+      textarea {
+        width: 100%;
+        height: 150px;
+        padding: 15px;
+        font-size: 16px;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+        resize: vertical;
+      }
+
+      button {
+        padding: 12px 25px;
+        font-size: 18px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #218838;
+      }
+
+      .result {
+        font-size: 22px;
+        font-weight: bold;
+        margin-top: 30px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      .result.fake {
+        color: #dc3545; /* Red color for fake news */
+      }
+
+      .result.real {
+        color: #28a745; /* Green color for real news */
+      }
+
+      #result p {
+        margin-bottom: 0;
+      }
+
+      .loading {
+        color: #007bff; /* Primary color */
+        font-style: italic;
+      }
+    </style>
+    <script>
+      async function predictFakeNews(event) {
+        event.preventDefault();
+
+        let text = document.getElementById("news_text").value;
+        let resultDiv = document.getElementById("result");
+
+        if (!text.trim()) {
+          resultDiv.innerHTML = "Please enter news text.";
+          resultDiv.className = ""; // Clear any previous classes
+          return;
+        }
+
+        resultDiv.innerHTML = "<p class='loading'>Analyzing...</p>";
+        resultDiv.className = ""; // Clear previous classes while loading
+
+        let response = await fetch("/predict", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            text,
+          }),
+        });
+
+        let data = await response.json();
+        let prediction = data.prediction
+          ? data.prediction
+          : "Error processing request";
+
+        resultDiv.innerHTML = `<p>${prediction}</p>`; // Set the prediction text
+
+        if (prediction.toLowerCase().includes("fake")) {
+          resultDiv.className = "result fake"; // Add 'fake' class
+        } else if (prediction.toLowerCase().includes("real")) {
+          resultDiv.className = "result real"; // Add 'real' class
+        } else {
+          resultDiv.className = "result"; // Default class if uncertain
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>📰 Fake News Detector</h1>
+      <form onsubmit="predictFakeNews(event)">
+        <textarea
+          id="news_text"
+          placeholder="Enter news text here..."
+          required
+        ></textarea
+        ><br /><br />
+        <button type="submit">🔍 Predict</button>
+      </form>
+
+      <div id="result"></div>
+    </div>
+  </body>
+</html>
