@@ -70,7 +70,7 @@ The dataset used for this project combines real and fake news articles.
 ### 1️⃣ Clone the repository
 ```bash
 git clone https://github.com/Suchandra21/Fake-News-Detection-using-BiLSTM
-cd Fake-News-Detection
+cd Fake-News-Detection-using-BiLSTM
 ```
 
 ### 2️⃣ Install dependencies
