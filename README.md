@@ -69,7 +69,7 @@ The dataset used for this project combines real and fake news articles.
 
 ### 1️⃣ Clone the repository
 ```bash
-git clone https://github.com/Souvik007h/Fake-News-Detection..git
+git clone https://github.com/Suchandra21/Fake-News-Detection-using-BiLSTM
 cd Fake-News-Detection
 ```
 
