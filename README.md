@@ -46,7 +46,7 @@ The dataset used for this project combines real and fake news articles.
 
 ## 📊 Results
 
-- ✅ Accuracy: **~95%**
+- ✅ Accuracy: **~99%**
 - 📉 Confusion Matrix
 - 📋 Classification Report
 - 📊 ROC-AUC Curve
@@ -55,7 +55,7 @@ The dataset used for this project combines real and fake news articles.
 # 📜 Report
 - A detailed project report includes:
 - Data preprocessing techniques
-- Model architectur
+- Model architecture
 - Performance metrics
 - Flask app architecture
 - Deployment steps on AWS EC2
